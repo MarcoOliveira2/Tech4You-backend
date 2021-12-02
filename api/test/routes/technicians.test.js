@@ -29,3 +29,10 @@ test('Test #3 - Inserir tecnico sem nome', () => {
       expect(res.body.error).toBe('Nome é um atributo obrigatório');
     });
 });
+
+test('Test #4 - Inserir tecnico sem email', async () => {
+  const result = await request(app).post('/technicians')
+    .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin' });
+  expect(result.status).toBe(400);
+  expect(result.body.error).toBe('O email é um atributo obrigatório');
+});
