@@ -20,3 +20,12 @@ test('Test #2 - Inserir Técnicos', () => {
       expect(res.body.name).toBe('Miguel Pinto');
     });
 });
+
+test('Test #3 - Inserir tecnico sem nome', () => {
+  return request(app).post('/technicians')
+    .send({ address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail })
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('Nome é um atributo obrigatório');
+    });
+});
