@@ -46,3 +46,12 @@ test('Test #5 - Inserir técnico sem password', (done) => {
       done();
     });
 });
+
+test('Test #6 - Inserir tecnico com email duplicado', () => {
+  request(app).post('/technicians')
+    .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail })
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('Email duplicado na BD');
+    });
+});
