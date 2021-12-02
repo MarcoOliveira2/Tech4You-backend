@@ -37,11 +37,12 @@ test('Test #4 - Inserir tecnico sem email', async () => {
   expect(result.body.error).toBe('O email é um atributo obrigatório');
 });
 
-test('Test #5 - Inserir tecnico sem password', async () => {
+test('Test #5 - Inserir técnico sem password', (done) => {
   request(app).post('/technicians')
     .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', email: mail })
     .then((res) => {
       expect(res.status).toBe(400);
       expect(res.body.error).toBe('A palavra-passe é um atributo obrigatório');
+      done();
     });
 });
