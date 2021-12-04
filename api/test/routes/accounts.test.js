@@ -42,7 +42,7 @@ test('Test #9 - Listar conta por ID', () => {
     });
 });
 
-test('Test #10 - Listar conta por ID', () => {
+test('Test #10 - Atualizar conta', () => {
   return app.db('accounts')
     .insert({ name: 'Account - Update ', technician_id: technician.id }, ['id'])
     .then((acc) => request(app).put(`${MAIN_ROUTE}/${acc[0].id}`)
