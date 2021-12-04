@@ -34,3 +34,10 @@ test('Test #3 - Inserir cliente sem nome', () => {
       expect(res.body.error).toBe('Nome é um atributo obrigatório');
     });
 });
+
+test('Test #4 - Inserir cliente sem email', async () => {
+  const result = await request(app).post('/technicians')
+    .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', nif: nifclient });
+  expect(result.status).toBe(400);
+  expect(result.body.error).toBe('O email é um atributo obrigatório');
+});
