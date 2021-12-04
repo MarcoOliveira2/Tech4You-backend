@@ -15,5 +15,9 @@ module.exports = (app) => {
     return app.db('technicians').insert(technician, '*');
   };
 
-  return { findAll, save };
+  const find = (filter = {}) => {
+    return app.db('technicians').where(filter).first();
+  };
+
+  return { findAll, save, find };
 };
