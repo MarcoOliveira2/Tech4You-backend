@@ -41,3 +41,14 @@ test('Test #9 - Listar conta por ID', () => {
       expect(res.body.technician_id).toBe(technician.id);
     });
 });
+
+test('Test #10 - Listar conta por ID', () => {
+  return app.db('accounts')
+    .insert({ name: 'Account - Update ', technician_id: technician.id }, ['id'])
+    .then((acc) => request(app).put(`${MAIN_ROUTE}/${acc[0].id}`)
+      .send({ name: 'Account updated' }))
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('Account updated');
+    });
+});
