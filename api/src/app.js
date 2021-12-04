@@ -20,4 +20,8 @@ app.get('/technicians', (req, res) => {
   res.status(200).send();
 });
 
+app.get('/clients', (req, res) => {
+  res.status(200).send();
+});
+
 module.exports = app;
