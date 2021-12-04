@@ -6,4 +6,7 @@ module.exports = (app) => {
   app.route('/clients')
     .get(app.routes.clients.findAll)
     .post(app.routes.clients.create);
+
+  app.route('/accounts')
+    .post(app.routes.technicians.create);
 };
