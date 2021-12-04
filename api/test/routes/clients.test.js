@@ -68,3 +68,10 @@ test('Test #7 - Inserir cliente sem numero de telemovel', () => {
       expect(res.body.error).toBe('O numero de telémovel é um atributo obrigatório');
     });
 });
+
+test('Test #4 - Inserir cliente sem nif', async () => {
+  const result = await request(app).post('/clients')
+    .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient });
+  expect(result.status).toBe(400);
+  expect(result.body.error).toBe('O NIF é um atributo obrigatório');
+});
