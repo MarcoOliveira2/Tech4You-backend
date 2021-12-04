@@ -25,3 +25,12 @@ test('Test #2 - Inserir Clientes', () => {
       expect(res.body.name).toBe('Marco Oliveira');
     });
 });
+
+test('Test #3 - Inserir cliente sem nome', () => {
+  return request(app).post('/clients')
+    .send({ address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('Nome é um atributo obrigatório');
+    });
+});
