@@ -59,3 +59,12 @@ test('Test #6 - Inserir cliente sem data de nascimento', () => {
       expect(res.body.error).toBe('A data de nascimento é um atributo obrigatório');
     });
 });
+
+test('Test #7 - Inserir cliente sem numero de telemovel', () => {
+  return request(app).post('/clients')
+    .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', email: mailclient, nif: nifclient })
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('O numero de telémovel é um atributo obrigatório');
+    });
+});
