@@ -36,7 +36,7 @@ test('Test #3 - Inserir cliente sem nome', () => {
 });
 
 test('Test #4 - Inserir cliente sem email', async () => {
-  const result = await request(app).post('/technicians')
+  const result = await request(app).post('/clients')
     .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', nif: nifclient });
   expect(result.status).toBe(400);
   expect(result.body.error).toBe('O email é um atributo obrigatório');
