@@ -20,3 +20,13 @@ test('Teste #17 - Inserir contas', () => {
       expect(res.body.name).toBe('Account #1');
     });
 });
+
+test('Test #8 - Listar contas', () => {
+  return app.db('accounts')
+    .insert({ name: 'Account #list', technician_id: technician.id })
+    .then(() => request(app).get(MAIN_ROUTE))
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body.length).toBeGreaterThan(0);
+    });
+});

@@ -8,5 +8,6 @@ module.exports = (app) => {
     .post(app.routes.clients.create);
 
   app.route('/accounts')
+    .get(app.routes.accounts.getAll)
     .post(app.routes.accounts.create);
 };
