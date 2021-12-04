@@ -30,3 +30,14 @@ test('Test #8 - Listar contas', () => {
       expect(res.body.length).toBeGreaterThan(0);
     });
 });
+
+test('Test #9 - Listar conta por ID', () => {
+  return app.db('accounts')
+    .insert({ name: 'Account By id', technician_id: technician.id }, ['id'])
+    .then((acc) => request(app).get(`${MAIN_ROUTE}/${acc[0].id}`))
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('Account By id');
+      expect(res.body.technician_id).toBe(technician.id);
+    });
+});
