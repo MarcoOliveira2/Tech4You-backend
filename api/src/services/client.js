@@ -11,8 +11,12 @@ module.exports = (app) => {
     if (!client.email) return { error: 'O email é um atributo obrigatório' };
     if (!client.nif) return { error: 'O NIF é um atributo obrigatório' };
 
-    const clientDb = await findAll({ email: client.email });
-    if (clientDb && clientDb.length > 0) return { error: 'Email duplicado na BD' };
+    const clientDbemail = await findAll({ email: client.email });
+    if (clientDbemail && clientDbemail.length > 0) return { error: 'Email duplicado na BD' };
+
+    const clientDbnif = await findAll({ nif: client.nif });
+    if (clientDbnif && clientDbnif.length > 0) return { error: 'Nif duplicado na BD' };
+
     return app.db('clients').insert(client, '*');
   };
 

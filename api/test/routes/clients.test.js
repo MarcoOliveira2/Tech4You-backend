@@ -42,12 +42,20 @@ test('Test #4 - Inserir cliente sem email', async () => {
   expect(result.body.error).toBe('O email é um atributo obrigatório');
 });
 
-test('Test #5 - Inserir cliente sem morada', (done) => {
-  request(app).post('/clients')
+test('Test #5 - Inserir cliente sem morada', () => {
+  return request(app).post('/clients')
     .send({ name: 'Marco Oliveira', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(400);
       expect(res.body.error).toBe('A morada é um atributo obrigatório');
-      done();
+    });
+});
+
+test('Test #6 - Inserir cliente sem data de nascimento', () => {
+  return request(app).post('/clients')
+    .send({ name: 'Marco Oliveira', address: 'Pedome', phoneNumber: '961548614', email: mailclient, nif: nifclient })
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('A data de nascimento é um atributo obrigatório');
     });
 });
