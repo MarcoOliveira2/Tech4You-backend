@@ -55,3 +55,21 @@ test('Test #6 - Inserir tecnico com email duplicado', () => {
       expect(res.body.error).toBe('Email duplicado na BD');
     });
 });
+
+test('Test #7 - Inserir tecnico sem morada', () => {
+  return request(app).post('/technicians')
+    .send({ name: 'Miguel Pinto', BirhDate: '16-03-2001', password: 'admin', email: mail })
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('A morada é um atributo obrigatório');
+    });
+});
+
+test('Test #8 - Inserir tecnico sem data de nascimento', () => {
+  return request(app).post('/technicians')
+    .send({ name: 'Miguel Pinto', address: 'Viatodos', password: 'admin', email: mail })
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('A data de nascimento é um atributo obrigatório');
+    });
+});
