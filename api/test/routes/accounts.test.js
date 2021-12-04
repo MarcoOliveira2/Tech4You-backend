@@ -12,7 +12,7 @@ beforeAll(async () => {
   technician = { ...res[0] };
 });
 
-test('Teste #17 - Inserir contas', () => {
+test('Teste #7 - Inserir contas', () => {
   return request(app).post(MAIN_ROUTE)
     .send({ name: 'Account #1', technician_id: technician.id })
     .then((res) => {
@@ -50,5 +50,15 @@ test('Test #10 - Listar conta por ID', () => {
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('Account updated');
+    });
+});
+
+test('Test #11 - Remover conta', () => {
+  return app.db('accounts')
+    .insert({ name: 'Account - Remove', technician_id: technician.id }, ['id'])
+    .then((acc) => request(app).delete(`${MAIN_ROUTE}/${acc[0].id}`)
+      .send({ name: 'Account removed' }))
+    .then((res) => {
+      expect(res.status).toBe(204);
     });
 });
