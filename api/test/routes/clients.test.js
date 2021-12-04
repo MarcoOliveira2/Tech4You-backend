@@ -69,7 +69,7 @@ test('Test #7 - Inserir cliente sem numero de telemovel', () => {
     });
 });
 
-test('Test #4 - Inserir cliente sem nif', async () => {
+test('Test #8 - Inserir cliente sem nif', async () => {
   const result = await request(app).post('/clients')
     .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient });
   expect(result.status).toBe(400);
