@@ -8,5 +8,5 @@ module.exports = (app) => {
     .post(app.routes.clients.create);
 
   app.route('/accounts')
-    .post(app.routes.technicians.create);
+    .post(app.routes.accounts.create);
 };
