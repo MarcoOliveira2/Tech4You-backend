@@ -23,8 +23,8 @@ module.exports = (app) => {
     .get(app.routes.equipments.getAll)
     .post(app.routes.equipments.create);
 
-  // app.route('/equipments/:id')
-  //   .get(app.routes.equipments.get)
+  app.route('/equipments/:id')
+    .get(app.routes.equipments.get);
   //   .put(app.routes.equipments.update)
   //   .delete(app.routes.equipments.remove);
 };
