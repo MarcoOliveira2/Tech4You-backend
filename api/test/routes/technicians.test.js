@@ -78,29 +78,30 @@ test('Test #8 - Inserir tecnico sem data de nascimento', () => {
 
 // test('Test #9 - Listar técnico por ID', () => {
 //   return app.db('technicians')
-//     .insert({ id: '2', name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: '1638371627642@ipca.pt' }, ['id'])
+//     .insert({ CAMPOS DO TECNICO }, ['id'])
 //     .then((tech) => request(app).get(`${MAIN_ROUTE}/${tech[0].id}`))
 //     .then((res) => {
 //       expect(res.status).toBe(200);
-//       expect(res.body.name).toBe('Miguel Pinto');
-//     });
-// });
-// test('Test #10 - Atualizar conta', () => {
-//   return app.db('accounts')
-//     .insert({ name: 'Account - Update ', technician_id: technician.id }, ['id'])
-//     .then((acc) => request(app).put(`${MAIN_ROUTE}/${acc[0].id}`)
-//       .send({ name: 'Account updated' }))
-//     .then((res) => {
-//       expect(res.status).toBe(200);
-//       expect(res.body.name).toBe('Account updated');
+//       expect(res.body.name).toBe(NOME DO TECNICO);
 //     });
 // });
 
-// test('Test #11 - Remover conta', () => {
-//   return app.db('accounts')
-//     .insert({ name: 'Account - Remove', technician_id: technician.id }, ['id'])
+// test('Test #10 - Atualizar técnico', () => {
+//   return app.db('technicians')
+//     .insert({ CAMPOS DO TECNICO }, ['id'])
+//     .then((tech) => request(app).put(`${MAIN_ROUTE}/${tech[0].id}`)
+//       .send({ NOME DO TECNICO ATUALIZADO }))
+//     .then((res) => {
+//       expect(res.status).toBe(200);
+//       expect(res.body.name).toBe(NOME DO TECNICO ATUALIZADO);
+//     });
+// });
+
+// test('Test #11 - Remover técnico', () => {
+//   return app.db('technicians')
+//     .insert({ CAMPOS DO TECNICO }, ['id'])
 //     .then((acc) => request(app).delete(`${MAIN_ROUTE}/${acc[0].id}`)
-//       .send({ name: 'Account removed' }))
+//       .send({ NOME DO TECNICO APAGADO }))
 //     .then((res) => {
 //       expect(res.status).toBe(204);
 //     });
