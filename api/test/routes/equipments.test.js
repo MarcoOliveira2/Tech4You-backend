@@ -72,3 +72,17 @@ test('Test #4 - Atualizar equipamento', () => {
       expect(res.body.typeEquipment).toBe('Laptop');
     });
 });
+
+test('Test #5 - Remover equipamento', () => {
+  function getRandomSerialNumber() {
+    return Math.floor(Math.random() * 88888888) + 1;
+  }
+  const serialNumberEquipment = `${getRandomSerialNumber()}`;
+  return app.db('equipments')
+    .insert({ typeEquipment: 'Laptop', serialNumber: serialNumberEquipment, brand: 'ACER', accessories: 'Charger', damages: 'Hinge damage', client_id: client.id }, ['id'])
+    .then((equip) => request(app).delete(`${MAIN_ROUTE}/${equip[0].id}`)
+      .send({ typeEquipment: 'Laptop' }))
+    .then((res) => {
+      expect(res.status).toBe(204);
+    });
+});

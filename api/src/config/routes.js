@@ -25,6 +25,6 @@ module.exports = (app) => {
 
   app.route('/equipments/:id')
     .get(app.routes.equipments.get)
-    .put(app.routes.equipments.update);
-  //   .delete(app.routes.equipments.remove);
+    .put(app.routes.equipments.update)
+    .delete(app.routes.equipments.remove);
 };
