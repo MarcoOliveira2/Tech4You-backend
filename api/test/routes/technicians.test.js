@@ -100,7 +100,7 @@ test('Test #8 - Inserir tecnico sem data de nascimento', () => {
 // test('Test #11 - Remover técnico', () => {
 //   return app.db('technicians')
 //     .insert({ CAMPOS DO TECNICO }, ['id'])
-//     .then((acc) => request(app).delete(`${MAIN_ROUTE}/${acc[0].id}`)
+//     .then((tech) => request(app).delete(`${MAIN_ROUTE}/${tech[0].id}`)
 //       .send({ NOME DO TECNICO APAGADO }))
 //     .then((res) => {
 //       expect(res.status).toBe(204);
