@@ -75,7 +75,12 @@ test('Test #8 - Inserir tecnico sem data de nascimento', () => {
       expect(res.body.error).toBe('A data de nascimento é um atributo obrigatório');
     });
 });
-
+// test('Test #10 - Atualizar conta', () => {
+//   return app.db('accounts')
+//     .insert({ name: 'Account - Update ', technician_id: technician.id }, ['id'])
+//     .then((acc) => request(app).put(`${MAIN_ROUTE}/${acc[0].id}`)
+//       .send({ name: 'Account updated' }))
+=======
 // test('Test #9 - Listar técnico por ID', () => {
 //   return app.db('technicians')
 //     .insert({ CAMPOS DO TECNICO }, ['id'])

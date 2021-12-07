@@ -4,7 +4,7 @@ module.exports = (app) => {
     .post(app.routes.technicians.create);
 
   app.route('/technicians/:id')
-    .get(app.routes.technicians.findAll);
+    .get(app.routes.technicians.get);
 
   app.route('/clients')
     .get(app.routes.clients.findAll)
