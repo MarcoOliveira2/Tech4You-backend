@@ -88,16 +88,16 @@ test('Test #9 - Listar Cliente por ID', () => {
     });
 });
 
-// test('Test #10 - Atualizar Cliente', () => {
-//   return app.db('clients')
-//     .insert({ CAMPOS DO CLIENTE }, ['id'])
-//     .then((cli) => request(app).put(`${MAIN_ROUTE}/${cli[0].id}`)
-//       .send({ NOME DO CLIENTE ATUALIZADO }))
-//     .then((res) => {
-//       expect(res.status).toBe(200);
-//       expect(res.body.name).toBe(NOME DO CLIENTE ATUALIZADO);
-//     });
-// });
+test('Test #10 - Atualizar Cliente', () => {
+  return app.db('clients')
+    .insert({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}` }, ['id'])
+    .then((cli) => request(app).put(`${MAIN_ROUTE}/${cli[0].id}`)
+      .send({ name: 'Cliente Atualizado' }))
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('Cliente Atualizado');
+    });
+});
 
 // test('Test #11 - Remover Cliente', () => {
 //   return app.db('clients')
