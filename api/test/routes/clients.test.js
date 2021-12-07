@@ -75,3 +75,35 @@ test('Test #8 - Inserir cliente sem nif', async () => {
   expect(result.status).toBe(400);
   expect(result.body.error).toBe('O NIF é um atributo obrigatório');
 });
+
+
+// test('Test #9 - Listar Cliente por ID', () => {
+//   return app.db('clients')
+//     .insert({ CAMPOS DO CLIENTE }, ['id'])
+//     .then((cli) => request(app).get(`${MAIN_ROUTE}/${cli[0].id}`))
+//     .then((res) => {
+//       expect(res.status).toBe(200);
+//       expect(res.body.name).toBe(NOME DO CLIENTE);
+//     });
+// });
+
+// test('Test #10 - Atualizar Cliente', () => {
+//   return app.db('clients')
+//     .insert({ CAMPOS DO CLIENTE }, ['id'])
+//     .then((cli) => request(app).put(`${MAIN_ROUTE}/${cli[0].id}`)
+//       .send({ NOME DO CLIENTE ATUALIZADO }))
+//     .then((res) => {
+//       expect(res.status).toBe(200);
+//       expect(res.body.name).toBe(NOME DO CLIENTE ATUALIZADO);
+//     });
+// });
+
+// test('Test #11 - Remover Cliente', () => {
+//   return app.db('clients')
+//     .insert({ CAMPOS DO CLIENTE }, ['id'])
+//     .then((cli) => request(app).delete(`${MAIN_ROUTE}/${cli[0].id}`)
+//       .send({ NOME DO CLIENTE APAGADO }))
+//     .then((res) => {
+//       expect(res.status).toBe(204);
+//     });
+// });
