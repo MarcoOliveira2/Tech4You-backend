@@ -30,5 +30,6 @@ module.exports = (app) => {
       .where({ id })
       .del();
   };
+  
   return { findAll, save, find, update, remove };
 };
