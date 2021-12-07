@@ -30,5 +30,11 @@ module.exports = (app) => {
       .update(client, '*');
   };
 
-  return { findAll, save, find, update };
+  const remove = (id) => {
+    return app.db('clients')
+      .where({ id })
+      .del();
+  };
+
+  return { findAll, save, find, update, remove };
 };

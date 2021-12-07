@@ -14,7 +14,8 @@ module.exports = (app) => {
 
   app.route('/clients/:id')
     .get(app.routes.clients.get)
-    .put(app.routes.clients.update);
+    .put(app.routes.clients.update)
+    .delete(app.routes.clients.remove);
 
   app.route('/accounts')
     .get(app.routes.accounts.getAll)

@@ -99,12 +99,12 @@ test('Test #10 - Atualizar Cliente', () => {
     });
 });
 
-// test('Test #11 - Remover Cliente', () => {
-//   return app.db('clients')
-//     .insert({ CAMPOS DO CLIENTE }, ['id'])
-//     .then((cli) => request(app).delete(`${MAIN_ROUTE}/${cli[0].id}`)
-//       .send({ NOME DO CLIENTE APAGADO }))
-//     .then((res) => {
-//       expect(res.status).toBe(204);
-//     });
-// });
+test('Test #11 - Remover Cliente', () => {
+  return app.db('clients')
+    .insert({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}` }, ['id'])
+    .then((cli) => request(app).delete(`${MAIN_ROUTE}/${cli[0].id}`)
+      .send({ name: 'Marco Oliveira' }))
+    .then((res) => {
+      expect(res.status).toBe(204);
+    });
+});
