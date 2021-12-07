@@ -15,5 +15,10 @@ module.exports = (app) => {
       .then((result) => res.status(200).json(result));
   };
 
-  return { findAll, create, get };
+  const update = (req, res) => {
+    app.services.client.update(req.params.id, req.body)
+      .then((result) => res.status(200).json(result[0]));
+  };
+
+  return { findAll, create, get, update };
 };

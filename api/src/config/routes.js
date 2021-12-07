@@ -13,7 +13,8 @@ module.exports = (app) => {
     .post(app.routes.clients.create);
 
   app.route('/clients/:id')
-    .get(app.routes.clients.get);
+    .get(app.routes.clients.get)
+    .put(app.routes.clients.update);
 
   app.route('/accounts')
     .get(app.routes.accounts.getAll)
