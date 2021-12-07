@@ -25,5 +25,10 @@ module.exports = (app) => {
       .update(technician, '*');
   };
 
-  return { findAll, save, find, update };
+  const remove = (id) => {
+    return app.db('technicians')
+      .where({ id })
+      .del();
+  };
+  return { findAll, save, find, update, remove };
 };

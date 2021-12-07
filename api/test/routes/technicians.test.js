@@ -97,12 +97,12 @@ test('Test #10 - Atualizar técnico', () => {
     });
 });
 
-// test('Test #11 - Remover técnico', () => {
-//   return app.db('technicians')
-//     .insert({ CAMPOS DO TECNICO }, ['id'])
-//     .then((tech) => request(app).delete(`${MAIN_ROUTE}/${tech[0].id}`)
-//       .send({ NOME DO TECNICO APAGADO }))
-//     .then((res) => {
-//       expect(res.status).toBe(204);
-//     });
-// });
+test('Test #11 - Remover técnico', () => {
+  return app.db('technicians')
+    .insert({name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` }, ['id'])
+    .then((tech) => request(app).delete(`${MAIN_ROUTE}/${tech[0].id}`)
+      .send({ name: 'Miguel Pinto' }))
+    .then((res) => {
+      expect(res.status).toBe(204);
+    });
+});
