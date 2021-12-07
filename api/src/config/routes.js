@@ -5,7 +5,8 @@ module.exports = (app) => {
 
   app.route('/technicians/:id')
     .get(app.routes.technicians.get)
-    .put(app.routes.technicians.update);
+    .put(app.routes.technicians.update)
+    .delete(app.routes.technicians.remove);
 
   app.route('/clients')
     .get(app.routes.clients.findAll)

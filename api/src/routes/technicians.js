@@ -19,5 +19,10 @@ module.exports = (app) => {
     app.services.technician.update(req.params.id, req.body)
       .then((result) => res.status(200).json(result[0]));
   };
-  return { findAll, create, get, update };
+
+  const remove = (req, res) => {
+    app.services.technician.remove(req.params.id)
+      .then(() => res.status(204).send());
+  };
+  return { findAll, create, get, update, remove };
 };
