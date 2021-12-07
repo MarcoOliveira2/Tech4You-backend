@@ -80,7 +80,6 @@ test('Test #8 - Inserir tecnico sem data de nascimento', () => {
 //     .insert({ name: 'Account - Update ', technician_id: technician.id }, ['id'])
 //     .then((acc) => request(app).put(`${MAIN_ROUTE}/${acc[0].id}`)
 //       .send({ name: 'Account updated' }))
-=======
 // test('Test #9 - Listar técnico por ID', () => {
 //   return app.db('technicians')
 //     .insert({ CAMPOS DO TECNICO }, ['id'])
