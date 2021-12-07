@@ -19,5 +19,11 @@ module.exports = (app) => {
     return app.db('technicians').where(filter).first();
   };
 
-  return { findAll, save, find };
+  const update = (id, technician) => {
+    return app.db('technicians')
+      .where({ id })
+      .update(technician, '*');
+  };
+
+  return { findAll, save, find, update };
 };

@@ -86,16 +86,16 @@ test('Test #9 - Listar técnico por ID', () => {
     });
 });
 
-// test('Test #10 - Atualizar técnico', () => {
-//   return app.db('technicians')
-//     .insert({ CAMPOS DO TECNICO }, ['id'])
-//     .then((tech) => request(app).put(`${MAIN_ROUTE}/${tech[0].id}`)
-//       .send({ NOME DO TECNICO ATUALIZADO }))
-//     .then((res) => {
-//       expect(res.status).toBe(200);
-//       expect(res.body.name).toBe(NOME DO TECNICO ATUALIZADO);
-//     });
-// });
+test('Test #10 - Atualizar técnico', () => {
+  return app.db('technicians')
+    .insert({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` }, ['id'])
+    .then((tech) => request(app).put(`${MAIN_ROUTE}/${tech[0].id}`)
+      .send({ name: 'Nome atualizado' }))
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('Nome atualizado');
+    });
+});
 
 // test('Test #11 - Remover técnico', () => {
 //   return app.db('technicians')
