@@ -1,8 +1,18 @@
+const bcrypt = require('bcrypt-nodejs');
 const ValidationError = require('../errors/validationError');
 
 module.exports = (app) => {
   const findAll = (filter = {}) => {
-    return app.db('technicians').where(filter).select();
+    return app.db('technicians').where(filter).select(['id', 'name', 'email', 'address', 'BirhDate']);
+  };
+
+  const find = (filter = {}) => {
+    return app.db('technicians').where(filter).first();
+  };
+
+  const getPasswordHash = (password) => {
+    const salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, salt);
   };
 
   const save = async (technician) => {
@@ -12,13 +22,12 @@ module.exports = (app) => {
     if (!technician.address) throw new ValidationError('A morada é um atributo obrigatório');
     if (!technician.BirhDate) throw new ValidationError('A data de nascimento é um atributo obrigatório');
 
-    const technicianDb = await findAll({ email: technician.email });
-    if (technicianDb && technicianDb.length > 0) throw new ValidationError('Email duplicado na BD');
-    return app.db('technicians').insert(technician, '*');
-  };
+    const technicianDb = await find({ email: technician.email });
+    if (technicianDb) throw new ValidationError('Email duplicado na BD');
 
-  const find = (filter = {}) => {
-    return app.db('technicians').where(filter).first();
+    const newTechnician = { ...technician };
+    newTechnician.password = getPasswordHash(technician.password);
+    return app.db('technicians').insert(newTechnician, ['id', 'name', 'email', 'address', 'BirhDate']);
   };
 
   const update = (id, technician) => {
@@ -33,5 +42,5 @@ module.exports = (app) => {
       .del();
   };
 
-  return { findAll, save, find, update, remove };
+  return { findAll, save, find, update, remove, getPasswordHash };
 };

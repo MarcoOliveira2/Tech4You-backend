@@ -1,5 +1,9 @@
 module.exports = (app) => {
+  app.route('/auth/signin').post(app.routes.auths.signin);
+  app.route('/auth/signup').post(app.routes.technicians.create);
+
   app.route('/technicians')
+    .all(app.config.passport.authenticate())
     .get(app.routes.technicians.findAll)
     .post(app.routes.technicians.create);
 
@@ -18,10 +22,12 @@ module.exports = (app) => {
     .delete(app.routes.clients.remove);
 
   app.route('/accounts')
+    .all(app.config.passport.authenticate())
     .get(app.routes.accounts.getAll)
     .post(app.routes.accounts.create);
 
   app.route('/accounts/:id')
+    .all(app.config.passport.authenticate())
     .get(app.routes.accounts.get)
     .put(app.routes.accounts.update)
     .delete(app.routes.accounts.remove);
