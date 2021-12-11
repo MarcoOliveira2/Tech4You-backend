@@ -40,4 +40,13 @@ module.exports = (app) => {
     .get(app.routes.equipments.get)
     .put(app.routes.equipments.update)
     .delete(app.routes.equipments.remove);
+
+  app.route('/services')
+    .get(app.routes.services.getAll)
+    .post(app.routes.services.create);
+
+  app.route('/services/:id')
+    .get(app.routes.services.get)
+    .put(app.routes.services.update)
+    .delete(app.routes.services.remove);
 };
