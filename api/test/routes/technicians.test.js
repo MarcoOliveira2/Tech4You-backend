@@ -3,7 +3,7 @@ const jwt = require('jwt-simple');
 
 const app = require('../../src/app');
 
-const MAIN_ROUTE = '/technicians';
+const MAIN_ROUTE = '/v1/technicians';
 
 const mail = `${Date.now()}@ipca.pt`;
 const secret = 'APIMARCOPINTO';
@@ -25,7 +25,7 @@ test('Test #1 - Listar os Técnicos', () => {
 });
 
 test('Test #2 - Inserir Técnicos', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post('/auth/signup')
     .set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '12345', email: `${Date.now()}@ipca.pt` })
     .then((res) => {
@@ -36,7 +36,7 @@ test('Test #2 - Inserir Técnicos', () => {
 });
 
 test('Test #2.1 - Guardar a palavra-passe encriptada', async () => {
-  const res = await request(app).post(MAIN_ROUTE)
+  const res = await request(app).post('/auth/signup')
     .set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` });
   expect(res.status).toBe(201);
@@ -47,7 +47,7 @@ test('Test #2.1 - Guardar a palavra-passe encriptada', async () => {
 });
 
 test('Test #3 - Inserir tecnico sem nome', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post('/auth/signup')
     .set('authorization', `bearer ${technician.token}`)
     .send({ address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail })
     .then((res) => {
@@ -57,7 +57,7 @@ test('Test #3 - Inserir tecnico sem nome', () => {
 });
 
 test('Test #4 - Inserir tecnico sem email', async () => {
-  const result = await request(app).post(MAIN_ROUTE)
+  const result = await request(app).post('/auth/signup')
     .set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin' });
   expect(result.status).toBe(400);
@@ -65,7 +65,7 @@ test('Test #4 - Inserir tecnico sem email', async () => {
 });
 
 test('Test #5 - Inserir técnico sem password', (done) => {
-  request(app).post(MAIN_ROUTE)
+  request(app).post('/auth/signup')
     .set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', email: mail })
     .then((res) => {
@@ -86,7 +86,7 @@ test('Test #6 - Inserir tecnico com email duplicado', () => {
 });
 
 test('Test #7 - Inserir tecnico sem morada', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post('/auth/signup')
     .set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Miguel Pinto', BirhDate: '16-03-2001', password: 'admin', email: mail })
     .then((res) => {
@@ -96,7 +96,7 @@ test('Test #7 - Inserir tecnico sem morada', () => {
 });
 
 test('Test #8 - Inserir tecnico sem data de nascimento', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post('/auth/signup')
     .set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Miguel Pinto', address: 'Viatodos', password: 'admin', email: mail })
     .then((res) => {

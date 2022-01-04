@@ -2,7 +2,7 @@ const request = require('supertest');
 
 const app = require('../../src/app');
 
-const MAIN_ROUTE = '/clients';
+const MAIN_ROUTE = '/public/clients';
 
 function getRandom() {
   return Math.floor(Math.random() * 99999999) + 1;
@@ -12,7 +12,7 @@ const mailclient = `${Date.now()}@cliente.pt`;
 const nifclient = `${getRandom()}`;
 
 test('Test #1 - Listar os Clientes', () => {
-  return request(app).get('/clients')
+  return request(app).get(MAIN_ROUTE)
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.length).toBeGreaterThan(-1);
@@ -20,7 +20,7 @@ test('Test #1 - Listar os Clientes', () => {
 });
 
 test('Test #2 - Inserir Clientes', () => {
-  return request(app).post('/clients')
+  return request(app).post(MAIN_ROUTE)
     .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(201);
@@ -29,7 +29,7 @@ test('Test #2 - Inserir Clientes', () => {
 });
 
 test('Test #3 - Inserir cliente sem nome', () => {
-  return request(app).post('/clients')
+  return request(app).post(MAIN_ROUTE)
     .send({ address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(400);
@@ -38,14 +38,14 @@ test('Test #3 - Inserir cliente sem nome', () => {
 });
 
 test('Test #4 - Inserir cliente sem email', async () => {
-  const result = await request(app).post('/clients')
+  const result = await request(app).post(MAIN_ROUTE)
     .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', nif: nifclient });
   expect(result.status).toBe(400);
   expect(result.body.error).toBe('O email é um atributo obrigatório');
 });
 
 test('Test #5 - Inserir cliente sem morada', () => {
-  return request(app).post('/clients')
+  return request(app).post(MAIN_ROUTE)
     .send({ name: 'Marco Oliveira', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(400);
@@ -54,7 +54,7 @@ test('Test #5 - Inserir cliente sem morada', () => {
 });
 
 test('Test #6 - Inserir cliente sem data de nascimento', () => {
-  return request(app).post('/clients')
+  return request(app).post(MAIN_ROUTE)
     .send({ name: 'Marco Oliveira', address: 'Pedome', phoneNumber: '961548614', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(400);
@@ -63,7 +63,7 @@ test('Test #6 - Inserir cliente sem data de nascimento', () => {
 });
 
 test('Test #7 - Inserir cliente sem numero de telemovel', () => {
-  return request(app).post('/clients')
+  return request(app).post(MAIN_ROUTE)
     .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(400);
@@ -71,11 +71,13 @@ test('Test #7 - Inserir cliente sem numero de telemovel', () => {
     });
 });
 
-test('Test #8 - Inserir cliente sem nif', async () => {
-  const result = await request(app).post('/clients')
-    .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient });
-  expect(result.status).toBe(400);
-  expect(result.body.error).toBe('O NIF é um atributo obrigatório');
+test('Test #8 - Inserir cliente sem nif', () => {
+  return request(app).post(MAIN_ROUTE)
+    .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient })
+    .then((res) => {
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('O NIF é um atributo obrigatório');
+    });
 });
 
 test('Test #9 - Listar Cliente por ID', () => {

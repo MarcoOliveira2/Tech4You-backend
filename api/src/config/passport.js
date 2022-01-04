@@ -11,10 +11,10 @@ module.exports = (app) => {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   };
 
-  const strategy = new Strategy(params, (load, done) => {
-    app.services.technician.find({ id: load.id })
+  const strategy = new Strategy(params, (payload, done) => {
+    app.services.technician.find({ id: payload.id })
       .then((technician) => {
-        if (technician) done(null, { ...load });
+        if (technician) done(null, { ...payload });
         else done(null, false);
       })
       .catch((err) => done(err, false));

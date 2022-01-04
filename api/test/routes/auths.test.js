@@ -34,7 +34,7 @@ test('Test #3 - Tentativa de autenticação com técnico errado', () => {
 });
 
 test('Test #4 - Aceder a rotas protegidas', () => {
-  return request(app).get('/technicians')
+  return request(app).get('/v1/technicians')
     .then((res) => {
       expect(res.status).toBe(401);
     });
