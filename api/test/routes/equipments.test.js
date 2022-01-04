@@ -6,7 +6,7 @@ function getRandomNif() {
   return Math.floor(Math.random() * 99999999) + 1;
 }
 
-const MAIN_ROUTE = '/equipments';
+const MAIN_ROUTE = '/public/equipments';
 let client;
 const mailclient = `${Date.now()}@cliente.pt`;
 const nifclient = `${getRandomNif()}`;

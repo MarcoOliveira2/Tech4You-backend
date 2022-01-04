@@ -3,7 +3,7 @@ const jwt = require('jwt-simple');
 const app = require('../../src/app');
 
 const secret = 'APIMARCOPINTO';
-const MAIN_ROUTE = '/services';
+const MAIN_ROUTE = '/public/services';
 let equipment;
 let technician;
 let client;
