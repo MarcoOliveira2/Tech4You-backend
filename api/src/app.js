@@ -1,8 +1,11 @@
 const app = require('express')();
 const consign = require('consign');
-var cors = require('cors');
+
+const cors = require('cors');
+
 const knex = require('knex');
 const knexfile = require('../knexfile');
+
 app.db = knex(knexfile.test);
 
 app.use(cors());

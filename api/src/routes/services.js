@@ -4,6 +4,7 @@ module.exports = (app) => {
   const router = express.Router();
 
   router.post('/', (req, res, next) => {
+    console.log(req.body);
     app.services.service.save(req.body)
       .then((result) => {
         return res.status(201).json(result[0]);
