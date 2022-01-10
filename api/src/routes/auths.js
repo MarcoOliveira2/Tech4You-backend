@@ -9,7 +9,7 @@ module.exports = (app) => {
   const router = express.Router();
 
   router.post('/signin', (req, res, next) => {
-    app.services.technician.findOne({ email: req.body.email })
+    app.services.technician.find({ email: req.body.email })
       .then((technician) => {
         if (!technician) throw new ValidationError('Autenticação inválida! #2');
         if (bcrypt.compareSync(req.body.password, technician.password)) {
