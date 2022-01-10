@@ -6,7 +6,7 @@ module.exports = (app) => {
     return app.db('technicians').where(filter).select(['id', 'name', 'email', 'address', 'BirhDate']);
   };
 
-  const find = (filter = {}) => {
+  const findOne = (filter = {}) => {
     return app.db('technicians').where(filter).first();
   };
 
@@ -22,7 +22,7 @@ module.exports = (app) => {
     if (!technician.address) throw new ValidationError('A morada é um atributo obrigatório');
     if (!technician.BirhDate) throw new ValidationError('A data de nascimento é um atributo obrigatório');
 
-    const technicianDb = await find({ email: technician.email });
+    const technicianDb = await findOne({ email: technician.email });
     if (technicianDb) throw new ValidationError('Email duplicado na BD');
 
     const newTechnician = { ...technician };
@@ -42,5 +42,5 @@ module.exports = (app) => {
       .del();
   };
 
-  return { findAll, save, find, update, remove, getPasswordHash };
+  return { findAll, save, findOne, update, remove, getPasswordHash };
 };
