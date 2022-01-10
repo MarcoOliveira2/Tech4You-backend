@@ -9,18 +9,18 @@ module.exports = (app) => {
   const router = express.Router();
 
   router.post('/signin', (req, res, next) => {
-    app.services.technician.find({ email: req.body.email })
+    app.services.technician.findOne({ email: req.body.email })
       .then((technician) => {
         if (!technician) throw new ValidationError('Autenticação inválida! #2');
         if (bcrypt.compareSync(req.body.password, technician.password)) {
-          const load = {
+          const payload = {
             id: technician.id,
             name: technician.name,
             address: technician.address,
             BirhDate: technician.BirhDate,
             email: technician.email,
           };
-          const token = jwt.encode(load, secret);
+          const token = jwt.encode(payload, secret);
           res.status(200).json({ token });
         } else throw new ValidationError('Autenticação inválida!');
       }).catch((err) => next(err));

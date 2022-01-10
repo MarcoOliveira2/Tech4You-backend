@@ -19,7 +19,7 @@ module.exports = (app) => {
   });
 
   router.get('/:id', (req, res, next) => {
-    app.services.technician.find({ id: req.params.id })
+    app.services.technician.findOne({ id: req.params.id })
       .then((result) => res.status(200).json(result))
       .catch((err) => next(err));
   });
