@@ -3,7 +3,7 @@ const jwt = require('jwt-simple');
 const app = require('../../src/app');
 
 const secret = 'APIMARCOPINTO';
-const MAIN_ROUTE = '/public/services';
+const MAIN_ROUTE = '/v1/services';
 let equipment;
 let technician;
 let client;
@@ -34,6 +34,7 @@ beforeAll(async () => {
 
 test('Test #1 - Inserir Serviço', () => {
   return request(app).post(MAIN_ROUTE)
+    .set('authorization', `bearer ${technician.token}`)
     .send({ status: 'Pending', description: 'Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id })
     .then((res) => {
       expect(res.status).toBe(201);
@@ -42,9 +43,8 @@ test('Test #1 - Inserir Serviço', () => {
 });
 
 test('Test #2 - Listar Serviços', () => {
-  return app.db('services')
-    .insert({ status: 'Pending', description: 'Listar Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id })
-    .then(() => request(app).get(MAIN_ROUTE))
+  return request(app).get(MAIN_ROUTE)
+    .set('authorization', `bearer ${technician.token}`)
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.length).toBeGreaterThan(0);
@@ -54,7 +54,8 @@ test('Test #2 - Listar Serviços', () => {
 test('Test #3 - Listar serviço por ID', () => {
   return app.db('services')
     .insert({ status: 'Pending', description: 'Listar ID Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
-    .then((serv) => request(app).get(`${MAIN_ROUTE}/${serv[0].id}`))
+    .then((serv) => request(app).get(`${MAIN_ROUTE}/${serv[0].id}`).set('authorization', `bearer ${technician.token}`))
+
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.description).toBe('Listar ID Avaria na dobradiça');
@@ -67,6 +68,7 @@ test('Test #4 - Atualizar serviço', () => {
   return app.db('services')
     .insert({ status: 'Pending', description: 'UPDATE Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
     .then((serv) => request(app).put(`${MAIN_ROUTE}/${serv[0].id}`)
+      .set('authorization', `bearer ${technician.token}`)
       .send({ description: 'UPDATE Avaria na dobradiça' }))
     .then((res) => {
       expect(res.status).toBe(200);
@@ -78,6 +80,7 @@ test('Test #5 - Remover serviço', () => {
   return app.db('services')
     .insert({ status: 'Pending', description: 'Delete Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
     .then((serv) => request(app).delete(`${MAIN_ROUTE}/${serv[0].id}`)
+      .set('authorization', `bearer ${technician.token}`)
       .send({ description: 'Delete Avaria na dobradiça' }))
     .then((res) => {
       expect(res.status).toBe(204);

@@ -1,18 +1,27 @@
 const request = require('supertest');
+const jwt = require('jwt-simple');
 
 const app = require('../../src/app');
 
-const MAIN_ROUTE = '/public/clients';
+const MAIN_ROUTE = '/v1/clients';
+const secret = 'APIMARCOPINTO';
 
 function getRandom() {
   return Math.floor(Math.random() * 99999999) + 1;
 }
+let technician;
 
 const mailclient = `${Date.now()}@cliente.pt`;
 const nifclient = `${getRandom()}`;
 
+beforeAll(async () => {
+  const res = await app.services.technician.save({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '12345', email: `${Date.now()}@ipca.pt` });
+  technician = { ...res[0] };
+  technician.token = jwt.encode(technician, secret);
+});
+
 test('Test #1 - Listar os Clientes', () => {
-  return request(app).get(MAIN_ROUTE)
+  return request(app).get(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.length).toBeGreaterThan(-1);
@@ -20,7 +29,7 @@ test('Test #1 - Listar os Clientes', () => {
 });
 
 test('Test #2 - Inserir Clientes', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(201);
@@ -29,7 +38,7 @@ test('Test #2 - Inserir Clientes', () => {
 });
 
 test('Test #3 - Inserir cliente sem nome', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
     .send({ address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(400);
@@ -38,14 +47,14 @@ test('Test #3 - Inserir cliente sem nome', () => {
 });
 
 test('Test #4 - Inserir cliente sem email', async () => {
-  const result = await request(app).post(MAIN_ROUTE)
+  const result = await request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', nif: nifclient });
   expect(result.status).toBe(400);
   expect(result.body.error).toBe('O email é um atributo obrigatório');
 });
 
 test('Test #5 - Inserir cliente sem morada', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Marco Oliveira', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(400);
@@ -54,7 +63,7 @@ test('Test #5 - Inserir cliente sem morada', () => {
 });
 
 test('Test #6 - Inserir cliente sem data de nascimento', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Marco Oliveira', address: 'Pedome', phoneNumber: '961548614', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(400);
@@ -63,7 +72,7 @@ test('Test #6 - Inserir cliente sem data de nascimento', () => {
 });
 
 test('Test #7 - Inserir cliente sem numero de telemovel', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', email: mailclient, nif: nifclient })
     .then((res) => {
       expect(res.status).toBe(400);
@@ -72,7 +81,7 @@ test('Test #7 - Inserir cliente sem numero de telemovel', () => {
 });
 
 test('Test #8 - Inserir cliente sem nif', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient })
     .then((res) => {
       expect(res.status).toBe(400);
@@ -83,7 +92,7 @@ test('Test #8 - Inserir cliente sem nif', () => {
 test('Test #9 - Listar Cliente por ID', () => {
   return app.db('clients')
     .insert({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}` }, ['id'])
-    .then((cli) => request(app).get(`${MAIN_ROUTE}/${cli[0].id}`))
+    .then((cli) => request(app).get(`${MAIN_ROUTE}/${cli[0].id}`).set('authorization', `bearer ${technician.token}`))
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('Marco Oliveira');
@@ -93,7 +102,7 @@ test('Test #9 - Listar Cliente por ID', () => {
 test('Test #10 - Atualizar Cliente', () => {
   return app.db('clients')
     .insert({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}` }, ['id'])
-    .then((cli) => request(app).put(`${MAIN_ROUTE}/${cli[0].id}`)
+    .then((cli) => request(app).put(`${MAIN_ROUTE}/${cli[0].id}`).set('authorization', `bearer ${technician.token}`)
       .send({ name: 'Cliente Atualizado' }))
     .then((res) => {
       expect(res.status).toBe(200);
@@ -104,7 +113,7 @@ test('Test #10 - Atualizar Cliente', () => {
 test('Test #11 - Remover Cliente', () => {
   return app.db('clients')
     .insert({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}` }, ['id'])
-    .then((cli) => request(app).delete(`${MAIN_ROUTE}/${cli[0].id}`)
+    .then((cli) => request(app).delete(`${MAIN_ROUTE}/${cli[0].id}`).set('authorization', `bearer ${technician.token}`)
       .send({ name: 'Marco Oliveira' }))
     .then((res) => {
       expect(res.status).toBe(204);
