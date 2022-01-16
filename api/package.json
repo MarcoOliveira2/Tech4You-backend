@@ -6,15 +6,6 @@
   "directories": {
     "test": "test"
   },
-  "scripts": {
-    "start": "node src/server.js",
-    "lint": "eslint src/** test/** --fix",
-    "secure-mode": "jest --watchAll --runInBand --verbose=true",
-    "test": "jest  --coverage --runInBand --forceExit"
-  },
-  "husky": {
-    "pre-commit": "rpm run lint && npm test"
-  } ,
   "jest": {
     "coverageTreshold": {
       "global": {
@@ -25,6 +16,17 @@
       }
     }
   },
+  "scripts": {
+    "start": "node src/server.js",
+    "lint": "eslint src/** test/** --fix",
+    "secure-mode": "jest --watchAll --runInBand --verbose=true",
+    "test": "jest  --coverage --runInBand --forceExit"
+  },
+  "husky": {
+    "hooks":{
+      "pre-commit": "npm run lint && npm test"
+    } 
+  } ,
   "keywords": [
     "Tech4You"
   ],
