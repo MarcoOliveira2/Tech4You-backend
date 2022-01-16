@@ -9,9 +9,12 @@
   "scripts": {
     "start": "node src/server.js",
     "lint": "eslint src/** test/** --fix",
-    "secure-mode": "jest --watchAll --verbose=false",
+    "secure-mode": "jest --watchAll --runInBand --verbose=true",
     "test": "jest  --coverage --runInBand --forceExit"
   },
+  "husky": {
+    "pre-commit": "rpm run lint && npm test"
+  } ,
   "jest": {
     "coverageTreshold": {
       "global": {
@@ -40,6 +43,7 @@
     "consign": "0.1.6",
     "cors": "^2.8.5",
     "express": "4.16.4",
+    "husky": "1.2.0",
     "jwt-simple": "0.5.5",
     "knex": "0.15.2",
     "passport": "0.4.0",

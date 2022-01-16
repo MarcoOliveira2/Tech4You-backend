@@ -4,9 +4,11 @@ const app = require('../../src/app');
 
 const secret = 'APIMARCOPINTO';
 const MAIN_ROUTE = '/v1/services';
-let equipment;
-let technician;
-let client;
+
+const technician = { id: 10000, name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '$2a$10$k7JP3zx/tuOEvhq5CPgMcediXLuRxTM/9EFfzm82qfa8gP3c9gchO', email: 'miguel@tech4you.pt' };
+const client = { id: 10000, name: 'Bruno Faria', address: 'Gerês', BirhDate: '29-05-1998', phoneNumber: '961548614', email: 'brunoFaria@planeta.com', nif: 45654325 };
+const equipment = { id: 10000, typeEquipment: 'Laptop', serialNumber: 43566323, brand: 'Apple', accessories: 'Charger', damages: 'Hinge damage', client_id: 10001 };
+const TOKEN = jwt.encode(technician, secret);
 
 function getRandomNif() {
   return Math.floor(Math.random() * 99999999) + 1;
@@ -15,26 +17,13 @@ function getRandomNif() {
 const mailclient = `${Date.now()}@cliente.pt`;
 const nifclient = `${getRandomNif()}`;
 
-function getRandomSerialNumber() {
-  return Math.floor(Math.random() * 88888888) + 1;
-}
-const serialNumberEquipment = `${getRandomSerialNumber()}`;
-
 beforeAll(async () => {
-  const res = await app.services.technician.save({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '12345', email: `${Date.now()}@ipca.pt` });
-  technician = { ...res[0] };
-  technician.token = jwt.encode(technician, secret);
-
-  const res2 = await app.services.client.save({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient });
-  client = { ...res2[0] };
-
-  const res1 = await app.services.equipment.save({ typeEquipment: 'Laptop', serialNumber: serialNumberEquipment, brand: 'ACER', accessories: 'Charger', damages: 'Hinge damage', client_id: client.id });
-  equipment = { ...res1[0] };
+  return app.db.seed.run();
 });
 
 test('Test #1 - Listar Serviços', () => {
   return request(app).get(MAIN_ROUTE)
-    .set('authorization', `bearer ${technician.token}`)
+    .set('authorization', `bearer ${TOKEN}`)
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.length).toBeGreaterThan(0);
@@ -43,7 +32,7 @@ test('Test #1 - Listar Serviços', () => {
 
 test('Test #2 - Inserir Serviço', () => {
   return request(app).post(MAIN_ROUTE)
-    .set('authorization', `bearer ${technician.token}`)
+    .set('authorization', `bearer ${TOKEN}`)
     .send({ status: 'Pending', description: 'Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id })
     .then((res) => {
       expect(res.status).toBe(201);
@@ -54,7 +43,7 @@ test('Test #2 - Inserir Serviço', () => {
 describe('Test #2.1 - Inserir Serviço', () => {
   const testTemplateInserir = (newData, errorMessage) => {
     return request(app).post(MAIN_ROUTE)
-      .set('authorization', `bearer ${technician.token}`)
+      .set('authorization', `bearer ${TOKEN}`)
       .send({ status: 'Pending', description: 'Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id, ...newData })
       .then((res) => {
         expect(res.status).toBe(400);
@@ -76,7 +65,7 @@ describe('Test #2.1 - Inserir Serviço', () => {
 test('Test #3 - Listar serviço por ID', () => {
   return app.db('services')
     .insert({ status: 'Pending', description: 'Listar ID Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
-    .then((serv) => request(app).get(`${MAIN_ROUTE}/${serv[0].id}`).set('authorization', `bearer ${technician.token}`))
+    .then((serv) => request(app).get(`${MAIN_ROUTE}/${serv[0].id}`).set('authorization', `bearer ${TOKEN}`))
 
     .then((res) => {
       expect(res.status).toBe(200);
@@ -90,7 +79,7 @@ test('Test #4 - Atualizar serviço', () => {
   return app.db('services')
     .insert({ status: 'Pending', description: 'UPDATE Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
     .then((serv) => request(app).put(`${MAIN_ROUTE}/${serv[0].id}`)
-      .set('authorization', `bearer ${technician.token}`)
+      .set('authorization', `bearer ${TOKEN}`)
       .send({ status: 'Pending', description: 'UPDATED Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }))
     .then((res) => {
       expect(res.status).toBe(200);
@@ -103,7 +92,7 @@ describe('Test #4.1 - Atualizar Técnicos', () => {
     return app.db('services')
       .insert({ status: 'Pending', description: 'UPDATE Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
       .then((serv) => request(app).put(`${MAIN_ROUTE}/${serv[0].id}`)
-        .set('authorization', `bearer ${technician.token}`)
+        .set('authorization', `bearer ${TOKEN}`)
         .send({ status: 'Pending', description: 'UPDATED Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id, ...newData }))
       .then((res) => {
         expect(res.status).toBe(400);
@@ -126,7 +115,7 @@ test('Test #5 - Remover serviço', () => {
   return app.db('services')
     .insert({ status: 'Pending', description: 'Delete Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
     .then((serv) => request(app).delete(`${MAIN_ROUTE}/${serv[0].id}`)
-      .set('authorization', `bearer ${technician.token}`)
+      .set('authorization', `bearer ${TOKEN}`)
       .send({ description: 'Delete Avaria na dobradiça' }))
     .then((res) => {
       expect(res.status).toBe(204);
