@@ -8,7 +8,6 @@ module.exports = (app) => {
   const publicRouter = express.Router();
 
   privateRouter.use('/technicians', app.routes.technicians);
-  privateRouter.use('/accounts', app.routes.accounts);
   privateRouter.use('/services', app.routes.services);
   privateRouter.use('/clients', app.routes.clients);
   privateRouter.use('/equipments', app.routes.equipments);

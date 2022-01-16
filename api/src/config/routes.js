@@ -21,17 +21,6 @@ module.exports = (app) => {
     .put(app.routes.clients.update)
     .delete(app.routes.clients.remove);
 
-  app.route('/accounts')
-    .all(app.config.passport.authenticate())
-    .get(app.routes.accounts.getAll)
-    .post(app.routes.accounts.create);
-
-  app.route('/accounts/:id')
-    .all(app.config.passport.authenticate())
-    .get(app.routes.accounts.get)
-    .put(app.routes.accounts.update)
-    .delete(app.routes.accounts.remove);
-
   app.route('/equipments')
     .get(app.routes.equipments.getAll)
     .post(app.routes.equipments.create);
