@@ -8,9 +8,19 @@
   },
   "scripts": {
     "start": "node src/server.js",
-    "test": "jest",
     "lint": "eslint src/** test/** --fix",
-    "secure-mode": "jest --watchAll --verbose=false"
+    "secure-mode": "jest --watchAll --verbose=false",
+    "test": "jest  --coverage --runInBand --forceExit"
+  },
+  "jest": {
+    "coverageTreshold": {
+      "global": {
+        "statements": 80,
+        "branches": 80,
+        "functions": 80,
+        "line": 80
+      }
+    }
   },
   "keywords": [
     "Tech4You"

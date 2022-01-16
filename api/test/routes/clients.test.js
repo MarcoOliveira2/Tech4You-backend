@@ -37,59 +37,28 @@ test('Test #2 - Inserir Clientes', () => {
     });
 });
 
-test('Test #3 - Inserir cliente sem nome', () => {
-  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
-    .send({ address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('Nome é um atributo obrigatório');
-    });
+describe('Test #2.1 - Inserir Clientes', () => {
+  const testTemplateInserir = (newData, errorMessage) => {
+    return request(app).post(MAIN_ROUTE)
+      .set('authorization', `bearer ${technician.token}`)
+      .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}`, ...newData })
+      .then((res) => {
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe(errorMessage);
+      });
+  };
+
+  test('Test 2.1.1 - Inserir Clientes sem nome', () => testTemplateInserir({ name: null }, 'O Nome é um atributo obrigatório'));
+  test('Test 2.1.2 - Inserir Clientes sem email', () => testTemplateInserir({ email: null }, 'O email é um atributo obrigatório'));
+  test('Test 2.1.3 - Inserir Clientes sem morada', () => testTemplateInserir({ address: null }, 'A morada é um atributo obrigatório'));
+  test('Test 2.1.4 - Inserir Clientes sem número telemóvel', () => testTemplateInserir({ phoneNumber: null }, 'O número de telemóvel é um atributo obrigatório'));
+  test('Test 2.1.5 - Inserir Clientes sem data de nascimento', () => testTemplateInserir({ BirhDate: null }, 'A data de nascimento é um atributo obrigatório'));
+  test('Test 2.1.5 - Inserir Clientes sem nif', () => testTemplateInserir({ nif: null }, 'O NIF é um atributo obrigatório'));
+  test('Test 2.1.6 - Inserir Clientes com email duplicado', () => testTemplateInserir({ email: mailclient }, 'Email duplicado na BD'));
+  test('Test 2.1.7 - Inserir Clientes com nif duplicado', () => testTemplateInserir({ nif: nifclient }, 'Nif duplicado na BD'));
 });
 
-test('Test #4 - Inserir cliente sem email', async () => {
-  const result = await request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
-    .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', nif: nifclient });
-  expect(result.status).toBe(400);
-  expect(result.body.error).toBe('O email é um atributo obrigatório');
-});
-
-test('Test #5 - Inserir cliente sem morada', () => {
-  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
-    .send({ name: 'Marco Oliveira', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('A morada é um atributo obrigatório');
-    });
-});
-
-test('Test #6 - Inserir cliente sem data de nascimento', () => {
-  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
-    .send({ name: 'Marco Oliveira', address: 'Pedome', phoneNumber: '961548614', email: mailclient, nif: nifclient })
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('A data de nascimento é um atributo obrigatório');
-    });
-});
-
-test('Test #7 - Inserir cliente sem numero de telemovel', () => {
-  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
-    .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', email: mailclient, nif: nifclient })
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('O numero de telémovel é um atributo obrigatório');
-    });
-});
-
-test('Test #8 - Inserir cliente sem nif', () => {
-  return request(app).post(MAIN_ROUTE).set('authorization', `bearer ${technician.token}`)
-    .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient })
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('O NIF é um atributo obrigatório');
-    });
-});
-
-test('Test #9 - Listar Cliente por ID', () => {
+test('Test #3 - Listar Cliente por ID', () => {
   return app.db('clients')
     .insert({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}` }, ['id'])
     .then((cli) => request(app).get(`${MAIN_ROUTE}/${cli[0].id}`).set('authorization', `bearer ${technician.token}`))
@@ -99,18 +68,38 @@ test('Test #9 - Listar Cliente por ID', () => {
     });
 });
 
-test('Test #10 - Atualizar Cliente', () => {
+test('Test #4 - Atualizar Cliente', () => {
   return app.db('clients')
     .insert({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}` }, ['id'])
     .then((cli) => request(app).put(`${MAIN_ROUTE}/${cli[0].id}`).set('authorization', `bearer ${technician.token}`)
-      .send({ name: 'Cliente Atualizado' }))
+      .send({ name: 'Cliente Atualizado', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}` }))
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('Cliente Atualizado');
     });
 });
 
-test('Test #11 - Remover Cliente', () => {
+describe('Test #5.1 - Atualizar Clientes', () => {
+  const testTemplateAtualizar = (newData, errorMessage) => {
+    return app.db('clients')
+      .insert({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}` }, ['id'])
+      .then((cli) => request(app).put(`${MAIN_ROUTE}/${cli[0].id}`).set('authorization', `bearer ${technician.token}`)
+        .send({ name: 'Cliente Atualizado', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}`, ...newData }))
+      .then((res) => {
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe(errorMessage);
+      });
+  };
+
+  test('Test 5.1.1 - Atualizar Clientes sem nome', () => testTemplateAtualizar({ name: null }, 'O Nome é um atributo obrigatório'));
+  test('Test 5.1.2 - Atualizar Clientes sem email', () => testTemplateAtualizar({ email: null }, 'O email é um atributo obrigatório'));
+  test('Test 5.1.3 - Atualizar Clientes sem morada', () => testTemplateAtualizar({ address: null }, 'A morada é um atributo obrigatório'));
+  test('Test 5.1.4 - Atualizar Clientes sem número telemóvel', () => testTemplateAtualizar({ phoneNumber: null }, 'O número de telemóvel é um atributo obrigatório'));
+  test('Test 5.1.5 - Atualizar Clientes sem data de nascimento', () => testTemplateAtualizar({ BirhDate: null }, 'A data de nascimento é um atributo obrigatório'));
+  test('Test 5.1.5 - Atualizar Clientes sem nif', () => testTemplateAtualizar({ nif: null }, 'O NIF é um atributo obrigatório'));
+});
+
+test('Test #5 - Remover Cliente', () => {
   return app.db('clients')
     .insert({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: `${Date.now()}@cliente.pt`, nif: `${getRandom()}` }, ['id'])
     .then((cli) => request(app).delete(`${MAIN_ROUTE}/${cli[0].id}`).set('authorization', `bearer ${technician.token}`)
