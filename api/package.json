@@ -23,10 +23,10 @@
     "test": "jest  --coverage --runInBand --forceExit"
   },
   "husky": {
-    "hooks":{
+    "hooks": {
       "pre-commit": "npm run lint && npm test"
-    } 
-  } ,
+    }
+  },
   "keywords": [
     "Tech4You"
   ],
@@ -50,6 +50,9 @@
     "knex": "0.15.2",
     "passport": "0.4.0",
     "passport-jwt": "4.0.0",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "sqlite3": "^5.0.2",
+    "uuidv4": "2.0.0",
+    "winston": "3.1.0"
   }
 }

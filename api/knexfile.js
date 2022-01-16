@@ -20,4 +20,25 @@ module.exports = {
       propagateCreateError: false,
     },
   },
+  // prod: {
+  //   client: 'pg',
+  //   connection: {
+  //     host: 'localhost',
+  //     user: 'admin',
+  //     password: 'ipca',
+  //     database: 'producao',
+  //   },
+  //   debug: false,
+  //   migrations: {
+  //     directory: './src/migrations',
+  //   },
+  //   seeds: {
+  //     directory: 'src/seeds',
+  //   },
+  //   pool: {
+  //     min: 0,
+  //     max: 50,
+  //     propagateCreateError: false,
+  //   },
+  // },
 };
