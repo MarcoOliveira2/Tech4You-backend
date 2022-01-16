@@ -48,5 +48,7 @@ module.exports = (app) => {
       .del();
   };
 
-  return { findAll, save, find, update, remove, getPasswordHash };
+  return {
+    findAll, save, find, update, remove, getPasswordHash,
+  };
 };

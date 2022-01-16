@@ -9,9 +9,6 @@ module.exports = (app) => {
     return app.db('equipments').where(filter).first();
   };
 
-  const a = 1234;
-  const b = 1234;
-  const c = 1234;
   const save = async (equipment) => {
     if (!equipment.typeEquipment) throw new ValidationError('O tipo de equipamento é um atributo obrigatório');
     if (!equipment.serialNumber) throw new ValidationError('O número de série é um atributo obrigatório');
@@ -47,5 +44,7 @@ module.exports = (app) => {
       .del();
   };
 
-  return { save, findAll, find, update, remove };
+  return {
+    save, findAll, find, update, remove,
+  };
 };
