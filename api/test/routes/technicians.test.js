@@ -5,7 +5,6 @@ const app = require('../../src/app');
 
 const MAIN_ROUTE = '/v1/technicians';
 
-const mail = `${Date.now()}@ipca.pt`;
 const secret = 'APIMARCOPINTO';
 
 const technician = { id: 10000, name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '$2a$10$k7JP3zx/tuOEvhq5CPgMcediXLuRxTM/9EFfzm82qfa8gP3c9gchO', email: 'miguel@tech4you.pt' };
