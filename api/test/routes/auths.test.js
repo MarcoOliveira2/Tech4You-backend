@@ -1,9 +1,12 @@
 const request = require('supertest');
 const app = require('../../src/app');
+
 const mail = `${Date.now()}@ipca.pt`;
 
 test('Test #1 - Receber token ao autenticar', () => {
-  return app.services.technician.save({ name: 'Miguel Auth', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail })
+  return app.services.technician.save({
+    name: 'Miguel Auth', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail,
+  })
     .then(() => request(app).post('/auth/signin')
       .send({ email: mail, password: 'admin' }))
     .then((res) => {
@@ -14,7 +17,9 @@ test('Test #1 - Receber token ao autenticar', () => {
 
 test('Test #2 - Tentativa de autenticação errada', () => {
   const nmail = `${Date.now()}@ipca.pt`;
-  return app.services.technician.save({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: nmail })
+  return app.services.technician.save({
+    name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: nmail,
+  })
     .then(() => request(app).post('/auth/signin')
       .send({ email: nmail, password: '12345' }))
     .then((res) => {
@@ -43,7 +48,9 @@ test('Test #4 - Aceder a rotas protegidas', () => {
 test('Test #5 - Criar técnico', () => {
   const nmail = `${Date.now()}@ipca.pt`;
   return request(app).post('/auth/signup')
-    .send({ name: 'Miguel Signup', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: nmail })
+    .send({
+      name: 'Miguel Signup', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: nmail,
+    })
     .then((res) => {
       expect(res.status).toBe(201);
       expect(res.body.name).toBe('Miguel Signup');

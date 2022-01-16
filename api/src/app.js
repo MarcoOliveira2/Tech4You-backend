@@ -21,11 +21,11 @@ app.use(cors());
 app.log = winston.createLogger({
   level: 'debug',
   transports: [
-    new winston.transports.Console({format: winston.format.json({space: 1})}),
+    new winston.transports.Console({ format: winston.format.json({ space: 1 }) }),
     new winston.transports.File({
       filename: 'log/error.log',
       level: 'warn',
-      format: winston.format.combine(winston.format.timestamp(), winston.format.json({space: 1})),
+      format: winston.format.combine(winston.format.timestamp(), winston.format.json({ space: 1 })),
     }),
   ],
 });
@@ -50,7 +50,7 @@ app.use((err, req, res, next) => {
   else {
     const id = uuid();
     app.log.error(name, message, stack);
-    res.status(500).json({ id, error: 'Erro do sistema '});
+    res.status(500).json({ id, error: 'Erro do sistema ' });
   }
   next(err);
 });

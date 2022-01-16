@@ -5,17 +5,13 @@ const app = require('../../src/app');
 const secret = 'APIMARCOPINTO';
 const MAIN_ROUTE = '/v1/services';
 
-const technician = { id: 10000, name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '$2a$10$k7JP3zx/tuOEvhq5CPgMcediXLuRxTM/9EFfzm82qfa8gP3c9gchO', email: 'miguel@tech4you.pt' };
-const client = { id: 10000, name: 'Bruno Faria', address: 'Gerês', BirhDate: '29-05-1998', phoneNumber: '961548614', email: 'brunoFaria@planeta.com', nif: 45654325 };
-const equipment = { id: 10000, typeEquipment: 'Laptop', serialNumber: 43566323, brand: 'Apple', accessories: 'Charger', damages: 'Hinge damage', client_id: 10001 };
+const technician = {
+  id: 10000, name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '$2a$10$k7JP3zx/tuOEvhq5CPgMcediXLuRxTM/9EFfzm82qfa8gP3c9gchO', email: 'miguel@tech4you.pt',
+};
+const equipment = {
+  id: 10000, typeEquipment: 'Laptop', serialNumber: 43566323, brand: 'Apple', accessories: 'Charger', damages: 'Hinge damage', client_id: 10001,
+};
 const TOKEN = jwt.encode(technician, secret);
-
-function getRandomNif() {
-  return Math.floor(Math.random() * 99999999) + 1;
-}
-
-const mailclient = `${Date.now()}@cliente.pt`;
-const nifclient = `${getRandomNif()}`;
 
 beforeAll(async () => {
   return app.db.seed.run();
@@ -33,7 +29,9 @@ test('Test #1 - Listar Serviços', () => {
 test('Test #2 - Inserir Serviço', () => {
   return request(app).post(MAIN_ROUTE)
     .set('authorization', `bearer ${TOKEN}`)
-    .send({ status: 'Pending', description: 'Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id })
+    .send({
+      status: 'Pending', description: 'Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id,
+    })
     .then((res) => {
       expect(res.status).toBe(201);
       expect(res.body.description).toBe('Avaria na dobradiça');
@@ -44,7 +42,9 @@ describe('Test #2.1 - Inserir Serviço', () => {
   const testTemplateInserir = (newData, errorMessage) => {
     return request(app).post(MAIN_ROUTE)
       .set('authorization', `bearer ${TOKEN}`)
-      .send({ status: 'Pending', description: 'Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id, ...newData })
+      .send({
+        status: 'Pending', description: 'Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id, ...newData,
+      })
       .then((res) => {
         expect(res.status).toBe(400);
         expect(res.body.error).toBe(errorMessage);
@@ -64,7 +64,9 @@ describe('Test #2.1 - Inserir Serviço', () => {
 
 test('Test #3 - Listar serviço por ID', () => {
   return app.db('services')
-    .insert({ status: 'Pending', description: 'Listar ID Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
+    .insert({
+      status: 'Pending', description: 'Listar ID Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id,
+    }, ['id'])
     .then((serv) => request(app).get(`${MAIN_ROUTE}/${serv[0].id}`).set('authorization', `bearer ${TOKEN}`))
 
     .then((res) => {
@@ -77,10 +79,14 @@ test('Test #3 - Listar serviço por ID', () => {
 
 test('Test #4 - Atualizar serviço', () => {
   return app.db('services')
-    .insert({ status: 'Pending', description: 'UPDATE Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
+    .insert({
+      status: 'Pending', description: 'UPDATE Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id,
+    }, ['id'])
     .then((serv) => request(app).put(`${MAIN_ROUTE}/${serv[0].id}`)
       .set('authorization', `bearer ${TOKEN}`)
-      .send({ status: 'Pending', description: 'UPDATED Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }))
+      .send({
+        status: 'Pending', description: 'UPDATED Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id,
+      }))
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.description).toBe('UPDATED Avaria na dobradiça');
@@ -90,10 +96,14 @@ test('Test #4 - Atualizar serviço', () => {
 describe('Test #4.1 - Atualizar Técnicos', () => {
   const testTemplateAtualizar = (newData, errorMessage) => {
     return app.db('services')
-      .insert({ status: 'Pending', description: 'UPDATE Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
+      .insert({
+        status: 'Pending', description: 'UPDATE Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id,
+      }, ['id'])
       .then((serv) => request(app).put(`${MAIN_ROUTE}/${serv[0].id}`)
         .set('authorization', `bearer ${TOKEN}`)
-        .send({ status: 'Pending', description: 'UPDATED Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id, ...newData }))
+        .send({
+          status: 'Pending', description: 'UPDATED Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id, ...newData,
+        }))
       .then((res) => {
         expect(res.status).toBe(400);
         expect(res.body.error).toBe(errorMessage);
@@ -113,7 +123,9 @@ describe('Test #4.1 - Atualizar Técnicos', () => {
 
 test('Test #5 - Remover serviço', () => {
   return app.db('services')
-    .insert({ status: 'Pending', description: 'Delete Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id }, ['id'])
+    .insert({
+      status: 'Pending', description: 'Delete Avaria na dobradiça', observations: 'Partido', startDate: '29-05-2002', endDate: '30-06-2003', tests: 'Teste a dobradiça', components: 'Dobradiça nova', technician_id: technician.id, equipment_id: equipment.id,
+    }, ['id'])
     .then((serv) => request(app).delete(`${MAIN_ROUTE}/${serv[0].id}`)
       .set('authorization', `bearer ${TOKEN}`)
       .send({ description: 'Delete Avaria na dobradiça' }))
