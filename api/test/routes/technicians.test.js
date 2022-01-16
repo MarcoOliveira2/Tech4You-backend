@@ -7,17 +7,17 @@ const MAIN_ROUTE = '/v1/technicians';
 
 const mail = `${Date.now()}@ipca.pt`;
 const secret = 'APIMARCOPINTO';
-let technician;
 
-beforeAll(async () => {
-  const res = await app.services.technician.save({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail });
-  technician = { ...res[0] };
-  technician.token = jwt.encode(technician, secret);
+const technician = { id: 10000, name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '$2a$10$k7JP3zx/tuOEvhq5CPgMcediXLuRxTM/9EFfzm82qfa8gP3c9gchO', email: 'miguel@tech4you.pt' };
+const TOKEN = jwt.encode(technician, secret);
+
+beforeAll(() => {
+  return app.db.seed.run();
 });
 
 test('Test #1 - Listar os Técnicos', () => {
   return request(app).get(MAIN_ROUTE)
-    .set('authorization', `bearer ${technician.token}`)
+    .set('authorization', `bearer ${TOKEN}`)
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.length).toBeGreaterThan(0);
@@ -26,7 +26,7 @@ test('Test #1 - Listar os Técnicos', () => {
 
 test('Test #2 - Inserir Técnicos', () => {
   return request(app).post('/auth/signup')
-    .set('authorization', `bearer ${technician.token}`)
+    .set('authorization', `bearer ${TOKEN}`)
     .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '12345', email: `${Date.now()}@ipca.pt` })
     .then((res) => {
       expect(res.status).toBe(201);
@@ -38,7 +38,7 @@ test('Test #2 - Inserir Técnicos', () => {
 describe('Test #2.1 - Inserir Técnicos', () => {
   const testTemplateInserir = (newData, errorMessage) => {
     return request(app).post('/auth/signup')
-      .set('authorization', `bearer ${technician.token}`)
+      .set('authorization', `bearer ${TOKEN}`)
       .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '12345', email: `${Date.now()}@ipca.pt`, ...newData })
       .then((res) => {
         expect(res.status).toBe(400);
@@ -51,12 +51,12 @@ describe('Test #2.1 - Inserir Técnicos', () => {
   test('Test 2.1.3 - Inserir Técnicos sem password', () => testTemplateInserir({ password: null }, 'A palavra-passe é um atributo obrigatório'));
   test('Test 2.1.4 - Inserir Técnicos sem morada', () => testTemplateInserir({ address: null }, 'A morada é um atributo obrigatório'));
   test('Test 2.1.5 - Inserir Técnicos sem data de nascimento', () => testTemplateInserir({ BirhDate: null }, 'A data de nascimento é um atributo obrigatório'));
-  test('Test 2.1.6 - Inserir Técnicos com email duplicado', () => testTemplateInserir({ email: mail }, 'Email duplicado na BD'));
+  test('Test 2.1.6 - Inserir Técnicos com email duplicado', () => testTemplateInserir({ email: technician.email }, 'Email duplicado na BD'));
 });
 
 test('Test #3 - Guardar a palavra-passe encriptada', async () => {
   const res = await request(app).post('/auth/signup')
-    .set('authorization', `bearer ${technician.token}`)
+    .set('authorization', `bearer ${TOKEN}`)
     .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` });
   expect(res.status).toBe(201);
   const { id } = res.body;
@@ -70,7 +70,7 @@ test('Test #4 - Listar técnico por ID', () => {
     .insert({
       name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt`
     }, ['id'])
-    .then((tech) => request(app).get(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${technician.token}`))
+    .then((tech) => request(app).get(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${TOKEN}`))
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('Miguel Pinto');
@@ -80,7 +80,7 @@ test('Test #4 - Listar técnico por ID', () => {
 test('Test #5 - Atualizar técnico', () => {
   return app.db('technicians')
     .insert({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` }, ['id'])
-    .then((tech) => request(app).put(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${technician.token}`)
+    .then((tech) => request(app).put(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${TOKEN}`)
       .send({ name: 'Nome atualizado', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` }))
     .then((res) => {
       expect(res.status).toBe(200);
@@ -92,7 +92,7 @@ describe('Test #5.1 - Atualizar Técnicos', () => {
   const testTemplateAtualizar = (newData, errorMessage) => {
     return app.db('technicians')
       .insert({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` }, ['id'])
-      .then((tech) => request(app).put(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${technician.token}`)
+      .then((tech) => request(app).put(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${TOKEN}`)
         .send({ name: 'Nome atualizado', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt`, ...newData }))
       .then((res) => {
         expect(res.status).toBe(400);
@@ -110,7 +110,7 @@ describe('Test #5.1 - Atualizar Técnicos', () => {
 test('Test #6 - Remover técnico', () => {
   return app.db('technicians')
     .insert({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` }, ['id'])
-    .then((tech) => request(app).delete(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${technician.token}`)
+    .then((tech) => request(app).delete(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${TOKEN}`)
       .send({ name: 'Miguel Pinto' }))
     .then((res) => {
       expect(res.status).toBe(204);
