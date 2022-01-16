@@ -16,7 +16,7 @@ module.exports = (app) => {
   };
 
   const save = async (technician) => {
-    if (!technician.name) throw new ValidationError('Nome é um atributo obrigatório');
+    if (!technician.name) throw new ValidationError('O Nome é um atributo obrigatório');
     if (!technician.email) throw new ValidationError('O email é um atributo obrigatório');
     if (!technician.password) throw new ValidationError('A palavra-passe é um atributo obrigatório');
     if (!technician.address) throw new ValidationError('A morada é um atributo obrigatório');
@@ -30,7 +30,13 @@ module.exports = (app) => {
     return app.db('technicians').insert(newTechnician, ['id', 'name', 'email', 'address', 'BirhDate']);
   };
 
-  const update = (id, technician) => {
+  const update = async (id, technician) => {
+    if (!technician.name) throw new ValidationError('O Nome é um atributo obrigatório');
+    if (!technician.email) throw new ValidationError('O email é um atributo obrigatório');
+    if (!technician.password) throw new ValidationError('A palavra-passe é um atributo obrigatório');
+    if (!technician.address) throw new ValidationError('A morada é um atributo obrigatório');
+    if (!technician.BirhDate) throw new ValidationError('A data de nascimento é um atributo obrigatório');
+
     return app.db('technicians')
       .where({ id })
       .update(technician, '*');

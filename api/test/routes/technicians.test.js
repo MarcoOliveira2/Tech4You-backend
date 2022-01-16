@@ -35,7 +35,26 @@ test('Test #2 - Inserir Técnicos', () => {
     });
 });
 
-test('Test #2.1 - Guardar a palavra-passe encriptada', async () => {
+describe('Test #2.1 - Inserir Técnicos', () => {
+  const testTemplateInserir = (newData, errorMessage) => {
+    return request(app).post('/auth/signup')
+      .set('authorization', `bearer ${technician.token}`)
+      .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '12345', email: `${Date.now()}@ipca.pt`, ...newData })
+      .then((res) => {
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe(errorMessage);
+      });
+  };
+
+  test('Test 2.1.1 - Inserir Técnicos sem nome', () => testTemplateInserir({ name: null }, 'O Nome é um atributo obrigatório'));
+  test('Test 2.1.2 - Inserir Técnicos sem email', () => testTemplateInserir({ email: null }, 'O email é um atributo obrigatório'));
+  test('Test 2.1.3 - Inserir Técnicos sem password', () => testTemplateInserir({ password: null }, 'A palavra-passe é um atributo obrigatório'));
+  test('Test 2.1.4 - Inserir Técnicos sem morada', () => testTemplateInserir({ address: null }, 'A morada é um atributo obrigatório'));
+  test('Test 2.1.5 - Inserir Técnicos sem data de nascimento', () => testTemplateInserir({ BirhDate: null }, 'A data de nascimento é um atributo obrigatório'));
+  test('Test 2.1.6 - Inserir Técnicos com email duplicado', () => testTemplateInserir({ email: mail }, 'Email duplicado na BD'));
+});
+
+test('Test #3 - Guardar a palavra-passe encriptada', async () => {
   const res = await request(app).post('/auth/signup')
     .set('authorization', `bearer ${technician.token}`)
     .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` });
@@ -46,66 +65,7 @@ test('Test #2.1 - Guardar a palavra-passe encriptada', async () => {
   expect(technicianDB.password).not.toBe('admin');
 });
 
-test('Test #3 - Inserir tecnico sem nome', () => {
-  return request(app).post('/auth/signup')
-    .set('authorization', `bearer ${technician.token}`)
-    .send({ address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail })
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('Nome é um atributo obrigatório');
-    });
-});
-
-test('Test #4 - Inserir tecnico sem email', async () => {
-  const result = await request(app).post('/auth/signup')
-    .set('authorization', `bearer ${technician.token}`)
-    .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin' });
-  expect(result.status).toBe(400);
-  expect(result.body.error).toBe('O email é um atributo obrigatório');
-});
-
-test('Test #5 - Inserir técnico sem password', (done) => {
-  request(app).post('/auth/signup')
-    .set('authorization', `bearer ${technician.token}`)
-    .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', email: mail })
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('A palavra-passe é um atributo obrigatório');
-      done();
-    });
-});
-
-test('Test #6 - Inserir tecnico com email duplicado', () => {
-  request(app).post(MAIN_ROUTE)
-    .set('authorization', `bearer ${technician.token}`)
-    .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail })
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('Email duplicado na BD');
-    });
-});
-
-test('Test #7 - Inserir tecnico sem morada', () => {
-  return request(app).post('/auth/signup')
-    .set('authorization', `bearer ${technician.token}`)
-    .send({ name: 'Miguel Pinto', BirhDate: '16-03-2001', password: 'admin', email: mail })
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('A morada é um atributo obrigatório');
-    });
-});
-
-test('Test #8 - Inserir tecnico sem data de nascimento', () => {
-  return request(app).post('/auth/signup')
-    .set('authorization', `bearer ${technician.token}`)
-    .send({ name: 'Miguel Pinto', address: 'Viatodos', password: 'admin', email: mail })
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe('A data de nascimento é um atributo obrigatório');
-    });
-});
-
-test('Test #9 - Listar técnico por ID', () => {
+test('Test #4 - Listar técnico por ID', () => {
   return app.db('technicians')
     .insert({
       name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt`
@@ -117,18 +77,37 @@ test('Test #9 - Listar técnico por ID', () => {
     });
 });
 
-test('Test #10 - Atualizar técnico', () => {
+test('Test #5 - Atualizar técnico', () => {
   return app.db('technicians')
     .insert({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` }, ['id'])
     .then((tech) => request(app).put(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${technician.token}`)
-      .send({ name: 'Nome atualizado' }))
+      .send({ name: 'Nome atualizado', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` }))
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.name).toBe('Nome atualizado');
     });
 });
 
-test('Test #11 - Remover técnico', () => {
+describe('Test #5.1 - Atualizar Técnicos', () => {
+  const testTemplateAtualizar = (newData, errorMessage) => {
+    return app.db('technicians')
+      .insert({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` }, ['id'])
+      .then((tech) => request(app).put(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${technician.token}`)
+        .send({ name: 'Nome atualizado', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt`, ...newData }))
+      .then((res) => {
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe(errorMessage);
+      });
+  };
+
+  test('Test 5.1.1 - Atualizar Técnicos sem nome', () => testTemplateAtualizar({ name: null }, 'O Nome é um atributo obrigatório'));
+  test('Test 5.1.2 - Atualizar Técnicos sem email', () => testTemplateAtualizar({ email: null }, 'O email é um atributo obrigatório'));
+  test('Test 5.1.3 - Atualizar Técnicos sem password', () => testTemplateAtualizar({ password: null }, 'A palavra-passe é um atributo obrigatório'));
+  test('Test 5.1.4 - Atualizar Técnicos sem morada', () => testTemplateAtualizar({ address: null }, 'A morada é um atributo obrigatório'));
+  test('Test 5.1.5 - Atualizar Técnicos sem data de nascimento', () => testTemplateAtualizar({ BirhDate: null }, 'A data de nascimento é um atributo obrigatório'));
+});
+
+test('Test #6 - Remover técnico', () => {
   return app.db('technicians')
     .insert({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: `${Date.now()}@ipca.pt` }, ['id'])
     .then((tech) => request(app).delete(`${MAIN_ROUTE}/${tech[0].id}`).set('authorization', `bearer ${technician.token}`)
