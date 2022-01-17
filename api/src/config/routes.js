@@ -38,4 +38,13 @@ module.exports = (app) => {
     .get(app.routes.services.get)
     .put(app.routes.services.update)
     .delete(app.routes.services.remove);
+
+  app.route('/publicClients/:id')
+    .get(app.routes.publicClients.get);
+
+  app.route('/publicEquipamentos/:id')
+    .get(app.routes.publicEquipamentos.get);
+
+  app.route('/publicServices/:id')
+    .get(app.routes.publicServices.get);
 };

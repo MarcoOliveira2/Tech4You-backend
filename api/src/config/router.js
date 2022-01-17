@@ -11,9 +11,9 @@ module.exports = (app) => {
   privateRouter.use('/clients', app.routes.clients);
   privateRouter.use('/equipments', app.routes.equipments);
 
-  publicRouter.use('/public/clients', app.routes.clients);
-  publicRouter.use('/public/equipments', app.routes.equipments);
-  publicRouter.use('/public/services', app.routes.services);
+  publicRouter.use('/publicClients', app.routes.publicClients);
+  publicRouter.use('/publicServices', app.routes.publicServices);
+  publicRouter.use('/publicEquipamentos', app.routes.publicEquipamentos);
 
   app.use('/v1', app.config.passport.authenticate(), privateRouter);
   app.use('/public', publicRouter);
