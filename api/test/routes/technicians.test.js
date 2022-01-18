@@ -26,7 +26,7 @@ test('Test #1 - Listar os Técnicos', () => {
 });
 
 test('Test #2 - Inserir Técnicos', () => {
-  return request(app).post('/auth/signup')
+  return request(app).post(MAIN_ROUTE)
     .set('authorization', `bearer ${TOKEN}`)
     .send({
       name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: '12345', email: `${Date.now()}@ipca.pt`,
