@@ -18,6 +18,13 @@ app.use(cors());
 //   "test": "set NODE_ENV = test & jest  --coverage --runInBand --forceExit"
 // },
 
+// "scripts": {
+//   "start": "node src/server.js",
+//   "lint": "eslint src/** test/** --fix",
+//   "secure-mode": "jest --watchAll --runInBand --verbose=true",
+//   "test": "jest  --coverage --runInBand --forceExit"
+// },
+
 app.log = winston.createLogger({
   level: 'debug',
   transports: [
