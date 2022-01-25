@@ -1,5 +1,5 @@
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\knexfile.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\knexfile.js
 FNF:0
 FNH:0
 DA:1,6
@@ -9,7 +9,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\app.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\app.js
 FN:21,(anonymous_0)
 FN:25,(anonymous_1)
 FNF:2
@@ -40,7 +40,7 @@ BRF:2
 BRH:1
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\config\middlewares.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\config\middlewares.js
 FN:3,(anonymous_0)
 FNF:1
 FNH:1
@@ -54,7 +54,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\config\passport.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\config\passport.js
 FN:8,(anonymous_0)
 FN:14,(anonymous_1)
 FN:16,(anonymous_2)
@@ -89,7 +89,7 @@ BRF:2
 BRH:1
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\config\router.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\config\router.js
 FN:4,(anonymous_0)
 FNF:1
 FNH:1
@@ -115,7 +115,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\errors\validationError.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\errors\validationError.js
 FN:1,ValidationError
 FNF:1
 FNH:1
@@ -129,7 +129,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\routes\auths.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\routes\auths.js
 FN:8,(anonymous_0)
 FN:11,(anonymous_1)
 FN:13,(anonymous_2)
@@ -174,7 +174,7 @@ BRF:4
 BRH:4
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\routes\clients.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\routes\clients.js
 FN:3,(anonymous_0)
 FN:6,(anonymous_1)
 FN:8,(anonymous_2)
@@ -236,7 +236,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\routes\equipments.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\routes\equipments.js
 FN:3,(anonymous_0)
 FN:6,(anonymous_1)
 FN:8,(anonymous_2)
@@ -301,7 +301,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\routes\services.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\routes\services.js
 FN:3,(anonymous_0)
 FN:6,(anonymous_1)
 FN:8,(anonymous_2)
@@ -366,7 +366,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\routes\technicians.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\routes\technicians.js
 FN:3,(anonymous_0)
 FN:6,(anonymous_1)
 FN:8,(anonymous_2)
@@ -421,7 +421,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\services\client.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\services\client.js
 FN:3,(anonymous_0)
 FN:4,(anonymous_1)
 FN:8,(anonymous_2)
@@ -505,7 +505,7 @@ BRF:34
 BRH:33
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\services\equipment.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\services\equipment.js
 FN:3,(anonymous_0)
 FN:4,(anonymous_1)
 FN:8,(anonymous_2)
@@ -601,7 +601,7 @@ BRF:46
 BRH:45
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\services\service.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\services\service.js
 FN:3,(anonymous_0)
 FN:4,(anonymous_1)
 FN:8,(anonymous_2)
@@ -702,7 +702,7 @@ BRF:47
 BRH:46
 end_of_record
 TN:
-SF:C:\Users\migue\Desktop\Escola\2ª Ano\Projeto\Tech4You-backend\api\src\services\technician.js
+SF:C:\Users\ferma\Dropbox\My PC (LAPTOP-OQG2DRPV)\Desktop\Tech4You-backend\api\src\services\technician.js
 FN:4,(anonymous_0)
 FN:5,(anonymous_1)
 FN:9,(anonymous_2)
