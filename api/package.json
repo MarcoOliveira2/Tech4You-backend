@@ -22,14 +22,13 @@
   "secure-mode": "jest --watchAll --runInBand --verbose=true",
   "test": "jest  --coverage --runInBand --forceExit"
 },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
-  "keywords": [
-    "Tech4You"
-  ],
+"repository": {
+  "type": "git",
+  "url": "git+https://github.com/MarcoOliveira2/Tech4You-backend.git"
+},
+"keywords": [
+  "Tech4You"
+],
   "author": "Marco Oliveira & Miguel Pinto",
   "license": "ISC",
   "devDependencies": {
