@@ -19,39 +19,18 @@ module.exports = {
       max: 50,
       propagateCreateError: false,
     },
-    production: {
-      client: 'pg',
-      connection: {
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false },
-      },
-      migrations: {
-        directory: './src/migrations',
-      },
-      seeds: {
-        directory: 'src/seeds',
-      },
+  },
+  production: {
+    client: 'pg',
+    connection: {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+    },
+    migrations: {
+      directory: 'src/migrations',
+    },
+    seeds: {
+      directory: 'src/seeds',
     },
   },
-  // prod: {
-  //   client: 'pg',
-  //   connection: {
-  //     host: 'localhost',
-  //     user: 'admin',
-  //     password: 'ipca',
-  //     database: 'producao',
-  //   },
-  //   debug: false,
-  //   migrations: {
-  //     directory: './src/migrations',
-  //   },
-  //   seeds: {
-  //     directory: 'src/seeds',
-  //   },
-  //   pool: {
-  //     min: 0,
-  //     max: 50,
-  //     propagateCreateError: false,
-  //   },
-  // },
 };
