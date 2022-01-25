@@ -8,7 +8,13 @@ const uuid = require('uuidv4');
 const knexfile = require('../knexfile');
 
 // app.db = knex(knexfile[process.env.NODE_ENV]);
-app.db = knex(knexfile.test);
+// app.db = knex(knexfile.test);
+
+if (process.env.PRODUCTION === 'true') {
+  app.db = knex(knexfile.production);
+} else {
+  app.db = knex(knexfile.test);
+}
 
 app.use(cors());
 // "scripts": {
